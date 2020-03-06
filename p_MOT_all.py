@@ -16,8 +16,8 @@ import numpy as np
 import random
 
 # You only need to change these lines to your dataset download path
-download_path = '/Users/jixunbo/Desktop/ReIDataset/MOT17Det'
-label_path = '/Users/jixunbo/Desktop/ReIDataset/MOT17Labels'
+download_path = '/Users/jixunbo/Desktop/MOT17Det'
+label_path = '/Users/jixunbo/Desktop/MOT17Labels'
 save_path = '/Users/jixunbo/Desktop/MOT17ReID'
 crop_W = 64
 crop_H = 128
@@ -252,7 +252,10 @@ for seq_name in seq_list:
         if len(pers_clusters[pers]) > min_frames:
             val_count = 0
             random.shuffle(pers_clusters[pers])
+            ii=0
             for sample in pers_clusters[pers]:
+                if ii >20:
+                    break
                 # print(len(pers_clusters[pers]))
                 # if val_count < val_num:  # first 2 images is used as val image
                 #     dst_path = osp.join(val_save_path, str(label_generator))
@@ -265,6 +268,7 @@ for seq_name in seq_list:
                 cv2.imwrite(osp.join(dst_path, '{}_1_{}_{}'.format(label_generator,
                     sample['seq_name'], sample['frame_id'])), sample['img'])
                 val_count += 1
+                ii+=1
             label_generator += 1
 
     for pers in test_split:
@@ -272,8 +276,11 @@ for seq_name in seq_list:
         if len(pers_clusters[pers]) > min_frames:
             query_count = 0
             random.shuffle(pers_clusters[pers])
+            ii=0
 
             for sample in pers_clusters[pers]:
+                if ii >20:
+                    break
 
                 if query_count < query_num:  # first 2 images is used as val image
                     dst_path = osp.join(query_save_path, str(label_generator))
@@ -285,5 +292,6 @@ for seq_name in seq_list:
                 cv2.imwrite(osp.join(dst_path, '{}_{}'.format(
                     sample['seq_name'], sample['frame_id'])), sample['img'])
                 query_count += 1
+                ii+=1
 
             label_generator += 1
